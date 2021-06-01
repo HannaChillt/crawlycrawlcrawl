@@ -14,7 +14,7 @@ while search1:
 
 for i in data.keys():
     print()
-    # print(i + ', ' + data.get(i))
+    print(i + ', ' + data.get(i))
 print(json.dumps(data, sort_keys=True))
 print(len(data))
 
