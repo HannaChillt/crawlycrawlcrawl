@@ -22,10 +22,14 @@ source = requests.get('https://gruendungsstipendium-sh.de/de/termine')
 soup = BeautifulSoup(source.content, 'lxml')
 
 search1 = soup.find_all('div', class_='content') # ich kann nur nach content suchen, nicht nach os-content
-einzeltermine = re.split(r'\d{2}\.\s\w+\s\d{4},\D+', search1[0].text)  # einzeltermine enthaelt nur einen Eintrag
+einzeltermine = re.split(r'\\d{2}\.\\s\\w+\\s\\d{4},\\D+', search1[0].text)  # einzeltermine enthaelt nur einen Eintrag
+
+for found in re.findall(r'\\d{2}\.\\s\\w+\\s\\d{4},\\D+', search1[0].text):
+    print(found)  # zu testzwecken
 print(len(einzeltermine))
 
 valids = []
+''''
 for termin in einzeltermine:
     print(termin)
     if "Ort wird bekannt gegeben" not in termin:
@@ -33,7 +37,7 @@ for termin in einzeltermine:
 
 for g in valids:
     print(g)
-
+'''
 
 pattern = re.compile(r"\d{2}\.\s[a-zA-ZäÄ]+\s\d{4}")
 
