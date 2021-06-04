@@ -21,12 +21,18 @@ class Termin:
 source = requests.get('https://gruendungsstipendium-sh.de/de/termine')
 soup = BeautifulSoup(source.content, 'lxml')
 
-search1 = soup.find_all('div', class_='content') # ich kann nur nach content suchen, nicht nach os-content
-einzeltermine = re.split(r'\\d{2}\.\\s\\w+\\s\\d{4},\\D+', search1[0].text)  # einzeltermine enthaelt nur einen Eintrag
+search1 = soup.find_all('div', class_='gcms_text')  # ich kann nur nach content suchen, nicht nach os-content
+print(len(search1))
 
-for found in re.findall(r'\\d{2}\.\\s\\w+\\s\\d{4},\\D+', search1[0].text):
-    print(found)  # zu testzwecken
-print(len(einzeltermine))
+trs = []
+for div in search1:
+    for tr in div.find_all('tr'):
+        trs.append(tr.text.strip().split('\n'))
+
+print(f'{trs}\n')
+
+einzeltermine = re.split(r'\n+', search1[0].text)  # einzeltermine enthaelt nur einen Eintrag
+
 
 valids = []
 ''''
