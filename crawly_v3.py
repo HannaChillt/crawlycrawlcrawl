@@ -60,11 +60,11 @@ for v in valids:
     counter += 1
 
 keywords = ['Gründerstipendium', 'Geld']
-sponsorship = Sponsorship(1, dates, 'https://gruendungsstipendium-sh.de/de/termine', 'https://gruendungsstipendium-sh.de/', keywords)
+sponsorship = Sponsorship('Gründungsstipendium', dates, 'https://gruendungsstipendium-sh.de/de/termine', 'https://gruendungsstipendium-sh.de/', keywords)
 ''''
 print(f'{stipendium.info}, {stipendium.quelle}')
 for t in stipendium.termine:
     print(f'{t.id}, {t.datum}, {t.info}, {t.ueberschrift}')
 '''
-insert_sponsorship = {'dates': insert_dates, 'source': sponsorship.source, 'info': sponsorship.info, 'keywords': sponsorship.keywords}
+insert_sponsorship = {'name': sponsorship.name, 'dates': insert_dates, 'source': sponsorship.source, 'info': sponsorship.info, 'keywords': sponsorship.keywords}
 sponsorship_result = sponsorships_col.insert_one(insert_sponsorship)
