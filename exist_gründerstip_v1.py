@@ -21,7 +21,7 @@ source = requests.get('https://www.exist.de/DE/Programm/Exist-Gruenderstipendium
 soup = BeautifulSoup(source.content, 'lxml')
 
 fristenueberschrift = "Antragsfristen"
-frist = soup.find('h2', text='Antragsfristen').find_next_sibling().text
+frist = soup.find('h2', text=fristenueberschrift).find_next_sibling().text
 insert_fristen = {"date": frist, "info": "", "heading": fristenueberschrift}
 
 searchfrist = soup.find_all('h2')
@@ -35,6 +35,8 @@ insert_sponsorship = {"name": "EXIST-Gründerstipendium",
                       "source": "https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/Projektantrag/inhalt.html",
                       "info": "https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/inhalt.html;jsessionid=67B51B5C2887B0BB5EEE6781AA5EED6D",
                       "keywords": keywords}
+
+# sponsorship_result = sponsorships_col.insert_one(insert_sponsorship)
 
 # name EXIST-Gründerstipendium
 # termine
