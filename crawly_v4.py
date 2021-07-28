@@ -1,9 +1,20 @@
 from bs4 import BeautifulSoup
 import requests
-import re
 import pymongo
+import os
+import logging
+import sys
 
-myclient = pymongo.MongoClient("mongodb://admin:tMnfX7bNvjV6JGn@cluster0-shard-00-00.fypca.mongodb.net:27017,cluster0-shard-00-01.fypca.mongodb.net:27017,cluster0-shard-00-02.fypca.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-vm32vo-shard-0&authSource=admin&retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE")
+# host = os.environ.get("MONGO_SVC", "mongodb://admin:tMnfX7bNvjV6JGn@cluster0-shard-00-00.fypca.mongodb.net:27017,cluster0-shard-00-01.fypca.mongodb.net:27017,cluster0-shard-00-02.fypca.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-vm32vo-shard-0&authSource=admin&retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE")#"redis-svc", "localhost"
+# database = os.environ.get("DATABASE_NAME", "gruenderfounder_database")
+# myclient = pymongo.MongoClient("mongodb://admin:tMnfX7bNvjV6JGn@cluster0-shard-00-00.fypca.mongodb.net:27017,cluster0-shard-00-01.fypca.mongodb.net:27017,cluster0-shard-00-02.fypca.mongodb.net:27017/myFirstDatabase?ssl=true&replicaSet=atlas-vm32vo-shard-0&authSource=admin&retryWrites=true&w=majority&ssl_cert_reqs=CERT_NONE")
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+log = logging.getLogger()
+
+mongo_host = os.environ.get("MONGO_SVC", "mongo") # mongo = service
+mongo_port = 27017
+myclient = pymongo.MongoClient(f'mongodb://{mongo_host}:{mongo_port}/?authSource=admin')
+log.debug("connected to db")
 mongodb = myclient["gruenderfounder_database"]
 # mongodb.drop_collection('sponsorships')
 sponsorships_col = mongodb['sponsorships']
@@ -34,13 +45,14 @@ insert_dates = []
 counter = 0
 for v in valids:
     if counter < 4:
-        insert_dates.append({'date': valids[counter][0], 'info': valids[counter][1], 'heading': headings[0]})
+        insert_dates.append({"date": valids[counter][0], "info": valids[counter][1], "heading": headings[0]})
     if 4 <= counter < 8:
-        insert_dates.append({'date': valids[counter][0], 'info': valids[counter][1], 'heading': headings[1]})
+        insert_dates.append({"date": valids[counter][0], "info": valids[counter][1], "heading": headings[1]})
     if 8 <= counter < 12:
-        insert_dates.append({'date': valids[counter][0], 'info': valids[counter][1], 'heading': headings[2]})
+        insert_dates.append({"date": valids[counter][0], "info": valids[counter][1], "heading": headings[2]})
     counter += 1
 
-keywords = ['Gründerstipendium', 'Geld']
-insert_sponsorship = {'name': 'Gründungsstipendium', 'dates': insert_dates, 'source': 'https://gruendungsstipendium-sh.de/de/termine', 'info': 'https://gruendungsstipendium-sh.de/', 'keywords': keywords}
+keywords = ["Gründerstipendium", "Geld"]
+insert_sponsorship = {"name": "Gründungsstipendium", "dates": insert_dates, "source": "https://gruendungsstipendium-sh.de/de/termine", "info": "https://gruendungsstipendium-sh.de/", "keywords": keywords}
 sponsorship_result = sponsorships_col.insert_one(insert_sponsorship)
+log.debug("fed db")
