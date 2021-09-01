@@ -17,24 +17,24 @@ mongo_port = 27017
 # sponsorships_col = mongodb['sponsorships']
 # print(f'names: {myclient.list_database_names()}, {mongodb.list_collection_names()}')
 
-source = requests.get('https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/Projektantrag/inhalt.html')
-soup = BeautifulSoup(source.content, 'lxml')
+quelle = requests.get('https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/Projektantrag/inhalt.html')
+soup = BeautifulSoup(quelle.content, 'lxml')
 
 fristenueberschrift = "Antragsfristen"
 frist = soup.find('h2', text='Antragsfristen').find_next_sibling().text
-insert_fristen = {"date": frist, "info": "", "heading": fristenueberschrift}
+insert_fristen = {"datum": frist, "info": "", "ueberschrift": fristenueberschrift}
 
 searchfrist = soup.find_all('h2')
 for h in searchfrist:
     if 'Antragsfristen' in h:
         fristenheading = h
 
-keywords = ["Gründung", "exist"]
+schlagworte = ["Gründung", "exist"]
 insert_sponsorship = {"name": "EXIST-Gründerstipendium",
-                      "dates": insert_fristen,
-                      "source": "https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/Projektantrag/inhalt.html",
+                      "daten": insert_fristen,
+                      "quelle": "https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/Projektantrag/inhalt.html",
                       "info": "https://www.exist.de/DE/Programm/Exist-Gruenderstipendium/inhalt.html;jsessionid=67B51B5C2887B0BB5EEE6781AA5EED6D",
-                      "keywords": keywords}
+                      "schlagworte": schlagworte}
 
 # name EXIST-Gründerstipendium
 # termine
