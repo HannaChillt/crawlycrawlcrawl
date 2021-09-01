@@ -23,11 +23,11 @@ soup = BeautifulSoup(quelle.content, 'lxml')
 
 fristenueberschrift = soup.find('h1', class_='isFirstInSlot').text.strip()
 frist = soup.find('div', class_='subhead').text.strip()
-fristen = re.findall('[0-9]{1,2}\\.\\s[a-zA-Z]*\\sbis\\s[0-9]{1,2}\\.\\s[a-zA-Z]*', frist)
+fristen = re.findall('\d+\.\s\D+\d+\.\s\S+', frist)
 
 insert_fristen = []
-insert_fristen.append({"datum": fristen[0], "info": "", "ueberschrift": fristenueberschrift})
-insert_fristen.append({"datum": fristen[1], "info": "", "ueberschrift": fristenueberschrift})
+insert_fristen.append({"datum": fristen[0], "info": "Einreichung von Projektskizzen", "ueberschrift": fristenueberschrift})
+insert_fristen.append({"datum": fristen[1], "info": "Einreichung von Projektskizzen", "ueberschrift": fristenueberschrift})
 
 schlagworte = ["Gründung", "exist", "Forschungstransfer"]
 insert_sponsorship = {"name": "EXIST-Gründerstipendium",
@@ -36,9 +36,12 @@ insert_sponsorship = {"name": "EXIST-Gründerstipendium",
                       "info": "https://www.exist.de/DE/Programm/Exist-Forschungstransfer/inhalt.html;jsessionid=9AACF5E6A3BFC6E5723E2955650341AA",
                       "schlagworte": schlagworte}
 
+# sponsorship_result = sponsorships_col.insert_one(insert_sponsorship)
+
 # name EXIST-Forschungstransfer
 # termine
 #   datum, info, ueberschrift
 # quelle https://www.exist.de/DE/Programm/Exist-Forschungstransfer/Antrag-Foerderphase-I/inhalt.html
 # info https://www.exist.de/DE/Programm/Exist-Forschungstransfer/inhalt.html;jsessionid=9AACF5E6A3BFC6E5723E2955650341AA
 # schlagworte
+
